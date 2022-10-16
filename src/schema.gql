@@ -1,0 +1,66 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type PostModel {
+  id: Float!
+  body: String!
+  posted_by: UserModel!
+  comments: [CommentModel!]
+}
+
+type CommentModel {
+  id: Float!
+  message: String!
+  commented_by: UserModel!
+  post: PostModel!
+  parent: CommentModel!
+  children: [CommentModel!]!
+  createdAt: String!
+  updatedAt: String
+}
+
+type UserModel {
+  id: Float!
+  username: String!
+  email: String!
+  comments: [CommentModel!]!
+  posts: [PostModel!]!
+}
+
+type Query {
+  getUsers: [UserModel!]!
+  getComments: [CommentModel!]!
+  getAllPosts: [PostModel!]!
+  getPostById(postId: Float!): PostModel
+}
+
+type Mutation {
+  addUser(input: UserDto!): UserModel!
+  addComment(input: CommentDto!): CommentModel!
+  addReply(input: ReplyDto!): CommentModel!
+  addPost(input: PostDto!): PostModel!
+}
+
+input UserDto {
+  username: String!
+  email: String!
+}
+
+input CommentDto {
+  message: String!
+  commented_by: Float!
+  post: Float!
+  parent: Float
+}
+
+input ReplyDto {
+  message: String!
+  parentId: Float!
+  commented_by: Float!
+}
+
+input PostDto {
+  body: String!
+  postedBy: Float!
+}
