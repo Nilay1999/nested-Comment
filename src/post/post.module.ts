@@ -5,7 +5,7 @@ import { PostService } from './post.service';
 import { PostController } from './post.controller';
 
 @Module({
-  providers: [PostResolver, PostService, PrismaService],
+  providers: [PostService, PrismaService],
   controllers: [PostController],
 })
 export class PostModule {}

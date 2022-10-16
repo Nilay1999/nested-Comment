@@ -12,16 +12,16 @@ import { PostModule } from './post/post.module';
 
 @Module({
   imports: [
-    GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      formatError: (error: GraphQLError) => {
-        if (error.originalError instanceof ApolloError) {
-          return error;
-        }
-        return new GraphQLError(error.message);
-      },
-    }),
+    // GraphQLModule.forRoot<ApolloDriverConfig>({
+    //   driver: ApolloDriver,
+    //   autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+    //   formatError: (error: GraphQLError) => {
+    //     if (error.originalError instanceof ApolloError) {
+    //       return error;
+    //     }
+    //     return new GraphQLError(error.message);
+    //   },
+    // }),
     UserModule,
     CommentModule,
     PostModule,
