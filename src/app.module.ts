@@ -9,6 +9,8 @@ import { ApolloError } from 'apollo-server-express';
 import { UserModule } from './user/user.module';
 import { CommentModule } from './comment/comment.module';
 import { PostModule } from './post/post.module';
+import { AuthController } from './auth/auth.controller';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -25,6 +27,7 @@ import { PostModule } from './post/post.module';
     UserModule,
     CommentModule,
     PostModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -27,9 +27,9 @@ export class UserService {
 
   async addUser(input: UserDto) {
     try {
-      const { email, username } = input;
+      const { email, username, password } = input;
       const user = await this.prismaService.user.create({
-        data: { email: email, username: username },
+        data: { email: email, username: username, password: password },
       });
       return user;
     } catch (error) {

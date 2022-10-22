@@ -14,6 +14,7 @@ export class PostService {
             select: {
               id: true,
               message: true,
+              children: true,
             },
           },
           posted_by: {
@@ -39,28 +40,29 @@ export class PostService {
           posted_by: {
             select: {
               id: true,
-              email: true,
               username: true,
             },
           },
           comments: {
             select: {
               id: true,
-              children: true,
               message: true,
-              commented_by: {
-                select: {
-                  id: true,
-                  username: true,
-                  email: true,
-                },
-              },
+              parentId: true,
             },
           },
         },
       });
 
-      return post;
+      const root = post.comments.filter(({ parentId }) => parentId == null);
+      const recur = (node) => {
+        const child = post.comments.filter(
+          ({ parentId }) => node.id == parentId,
+        );
+        node.children = child;
+        child.forEach((c) => recur(c));
+      };
+      recur(root);
+      return root;
     } catch (error) {
       throw error;
     }
@@ -68,28 +70,22 @@ export class PostService {
   async addPost(input: PostDto) {
     try {
       const { body, postedBy } = input;
-      const isUserExists = await this.prismaService.user.findFirst({
-        where: {
-          id: postedBy,
-        },
-      });
-      if (isUserExists) {
-        const post = await this.prismaService.post.create({
-          data: {
-            body: body,
-            posted_by: {
-              connect: {
-                id: postedBy,
-              },
+      const post = await this.prismaService.post.create({
+        data: {
+          body: body,
+          posted_by: {
+            connect: {
+              id: postedBy,
             },
           },
-          select: {
-            id: true,
-            body: true,
-          },
-        });
-        return post;
-      }
+        },
+        select: {
+          id: true,
+          body: true,
+        },
+      });
+
+      return post;
     } catch (error) {
       return error;
     }
