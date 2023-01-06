@@ -9,23 +9,15 @@ export class CommentService {
 
   async getComments() {
     try {
-      let comment = await this.prismaService.comment.findMany({
-        where: {
-          parent: null,
-        },
-        include: {
-          children: {
-            include: {
-              children: {
-                include: {
-                  children: true,
-                },
-              },
-            },
-          },
-        },
-      });
-      return comment;
+      let comment = await this.prismaService.comment.findMany({});
+      const root = comment.filter(({ parentId }) => parentId == null);
+      const recur = (node) => {
+        const child = comment.filter(({ parentId }) => node.id == parentId);
+        node.children = child;
+        child.forEach((c) => recur(c));
+      };
+      recur(root);
+      return root;
     } catch (error) {
       return error;
     }
